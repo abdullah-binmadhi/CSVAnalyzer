@@ -5,13 +5,15 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node build.js",
+    "vercel-build": "npm run build",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "start": "node api-server-example/server.js",
     "dev": "tsc --watch",
-    "clean": "rm -rf dist coverage"
+    "clean": "rm -rf dist coverage",
+    "deploy": "vercel --prod"
   },
   "keywords": [
     "data-analysis",

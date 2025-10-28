@@ -19,7 +19,13 @@ A comprehensive **automated exploratory data analysis (EDA) system** that transf
 
 ## 🚀 Quick Start
 
-### 1. Installation
+### 1. Try Live Demo (Easiest)
+
+**🌐 Live on Vercel**: [your-app.vercel.app](https://your-app.vercel.app)
+
+Just visit the link and drag & drop your CSV file for instant analysis!
+
+### 2. Local Installation
 
 ```bash
 # Clone the repository
@@ -33,14 +39,14 @@ npm install
 npm run build
 ```
 
-### 2. Try the Web Interface (Easiest)
+### 3. Deploy Your Own
 
 ```bash
-# Open the web interface
-open web-frontend-example/index.html
+# Deploy to Vercel
+npm run deploy
 ```
 
-Drag and drop your CSV file and get instant analysis!
+See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) for detailed instructions.
 
 ### 3. Use as a Library
 

@@ -75,3 +75,6 @@ temp/
 # Kiro IDE files (keep specs but ignore other IDE files)
 .kiro/settings/
 .kiro/cache/
+
+# Vercel
+.vercel
