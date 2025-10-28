@@ -343,7 +343,7 @@
         
         // Call the Vercel API for analysis
         async function callAnalysisAPI(data) {
-            const response = await fetch('/api/analyze', {
+            const response = await fetch('/api/analyze-standalone', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

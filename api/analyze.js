@@ -3,7 +3,16 @@
  * Endpoint: /api/analyze
  */
 
-const { analyzeDataset } = require('../dist/index.js');
+// Import the analysis function
+let analyzeDataset;
+try {
+  // Try to import from dist first
+  analyzeDataset = require('../dist/index.js').analyzeDataset;
+} catch (error) {
+  // Fallback: compile and import TypeScript directly
+  require('ts-node/register');
+  analyzeDataset = require('../src/index.ts').analyzeDataset;
+}
 
 // Enable CORS for all origins
 const corsHeaders = {
