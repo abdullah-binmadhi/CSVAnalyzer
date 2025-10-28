@@ -1,0 +1,45 @@
+{
+  "name": "senior-data-analyst-ai",
+  "version": "1.0.0",
+  "description": "Automated exploratory data analysis system that transforms CSV data into actionable business insights and visualization recommendations",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "start": "node api-server-example/server.js",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist coverage"
+  },
+  "keywords": [
+    "data-analysis",
+    "exploratory-data-analysis", 
+    "business-intelligence",
+    "csv-analysis",
+    "data-visualization",
+    "chart-recommendations",
+    "automated-analysis",
+    "typescript",
+    "nodejs"
+  ],
+  "author": "Senior Data Analyst AI Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/senior-data-analyst-ai.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/senior-data-analyst-ai/issues"
+  },
+  "homepage": "https://github.com/yourusername/senior-data-analyst-ai#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}
