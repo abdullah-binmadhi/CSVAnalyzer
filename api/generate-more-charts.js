@@ -1,6 +1,7 @@
 /**
  * Generate Additional Charts API for Vercel
  * Generates extended chart recommendations with experimental visualizations
+ * Updated: Enhanced comprehensive chart generation system
  */
 
 // Enable CORS for all origins
