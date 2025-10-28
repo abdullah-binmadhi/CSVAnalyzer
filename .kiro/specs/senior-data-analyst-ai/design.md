@@ -19,15 +19,30 @@ graph TD
     E --> F[Report Generator]
     F --> G[JSON Output Formatter]
     G --> H[Output: JSON Response]
+    
+    I[Generate More Charts Request] --> J[Extended Visualization Generator]
+    J --> K[Advanced Chart Categorizer]
+    K --> L[Extended Output Formatter]
+    L --> M[Extended Charts Response]
+    
+    B --> J
+    C --> J
 ```
 
 ### System Flow
 
+#### Primary Analysis Flow
 1. **Input Processing**: Validate and parse dataset headers and sample data
 2. **Data Analysis**: Analyze column types, relationships, and patterns
-3. **Visualization Generation**: Create all possible unique chart recommendations
+3. **Comprehensive Visualization Generation**: Create ALL possible chart recommendations including variations
 4. **Business Intelligence**: Generate comprehensive analysis report
 5. **Output Formatting**: Structure results into specified JSON format
+
+#### Extended Analysis Flow (Generate More Charts)
+1. **Extended Input Processing**: Reuse existing data analysis from primary flow
+2. **Advanced Chart Generation**: Create experimental and business-focused visualizations
+3. **Chart Categorization**: Organize charts by analytical purpose and complexity
+4. **Extended Output Formatting**: Structure additional charts with metadata
 
 ## Components and Interfaces
 
@@ -83,7 +98,7 @@ interface DataQualityMetrics {
 
 ### 3. Visualization Generator
 
-**Purpose**: Creates all possible unique visualization recommendations
+**Purpose**: Creates comprehensive visualization recommendations including all possible variations
 
 **Interface**:
 ```typescript
@@ -92,15 +107,22 @@ interface ChartRecommendation {
   type: 'bar' | 'line' | 'scatter';
   xAxis: string;
   yAxis: string;
+  description?: string;
+}
+
+interface ExtendedChartRecommendation extends ChartRecommendation {
+  category: 'distribution' | 'trend' | 'correlation' | 'business' | 'performance' | 'segmentation';
+  isAdvanced: boolean;
 }
 ```
 
 **Responsibilities**:
-- Generate bar charts for categorical-vs-numeric analysis
-- Create line charts for time-series and trend analysis
-- Produce scatter plots for numerical correlations
-- Ensure no duplicate visualizations
-- Maximize chart diversity and coverage
+- Generate ALL possible bar charts for categorical-vs-numeric analysis
+- Create ALL possible line charts for time-series and trend analysis
+- Produce ALL possible scatter plots for numerical correlations
+- Generate comprehensive chart variations including duplications
+- Maximize chart coverage and analytical depth
+- Support extended chart generation with advanced visualizations
 
 ### 4. Business Intelligence Analyzer
 
@@ -135,7 +157,35 @@ interface BusinessInsights {
 - List actionable business questions
 - Provide dataset potential assessment
 
-### 6. Output Formatter
+### 6. Extended Visualization Generator
+
+**Purpose**: Creates advanced and experimental chart recommendations
+
+**Interface**:
+```typescript
+interface ExtendedAnalysisOutput {
+  additional_charts: ExtendedChartRecommendation[];
+  total_additional: number;
+  categories: {
+    distribution: number;
+    trend: number;
+    correlation: number;
+    business: number;
+    performance: number;
+    segmentation: number;
+  };
+}
+```
+
+**Responsibilities**:
+- Generate advanced distribution analysis charts
+- Create business intelligence and performance dashboards
+- Produce financial analysis visualizations
+- Generate segmentation and comparative analysis charts
+- Categorize charts by analytical purpose
+- Provide metadata about chart generation
+
+### 7. Output Formatter
 
 **Purpose**: Structures final JSON response
 
@@ -144,6 +194,18 @@ interface BusinessInsights {
 interface AnalysisOutput {
   charts_to_generate: ChartRecommendation[];
   full_analysis_report_markdown: string;
+}
+
+interface ExtendedAnalysisResponse {
+  success: boolean;
+  data: ExtendedAnalysisOutput;
+  metadata: {
+    processingTime: number;
+    totalAdditionalCharts: number;
+    categories: object;
+    timestamp: string;
+    version: string;
+  };
 }
 ```
 
@@ -187,13 +249,29 @@ interface BusinessAnalysis {
 
 ### Chart Generation Logic
 
-The visualization generator follows a systematic approach:
+The visualization generator follows a comprehensive systematic approach:
 
-1. **Categorical-Numeric Combinations**: Generate bar charts for all meaningful categorical vs numeric column pairs
-2. **Time-Series Analysis**: Create line charts for datetime columns against numeric values
-3. **Correlation Analysis**: Produce scatter plots for all numeric column combinations
-4. **Distribution Analysis**: Generate appropriate charts for single-column distributions
-5. **Composition Analysis**: Create charts showing part-to-whole relationships
+#### Primary Chart Generation
+1. **Categorical-Numeric Combinations**: Generate bar charts for ALL categorical vs numeric column pairs
+2. **Time-Series Analysis**: Create line charts for ALL datetime columns against ALL numeric values
+3. **Correlation Analysis**: Produce scatter plots for ALL numeric column combinations
+4. **Distribution Analysis**: Generate charts for ALL single-column distributions
+5. **Composition Analysis**: Create charts showing ALL part-to-whole relationships
+
+#### Extended Chart Generation (Generate More Charts)
+1. **Advanced Distribution Charts**: Box plot representations, quartile analysis
+2. **Comparative Analysis**: Cross-categorical analysis, multi-dimensional comparisons
+3. **Advanced Time Series**: Moving averages, year-over-year growth, seasonal patterns
+4. **Advanced Correlation**: Correlation matrices, bubble charts (3D scatter plots)
+5. **Business Intelligence Charts**: Performance dashboards, benchmark analysis
+6. **Financial Analysis**: Ratio analysis, waterfall charts, efficiency metrics
+7. **Segmentation Analysis**: Customer/product segmentation, demographic breakdowns
+
+#### Chart Generation Strategy
+- **Comprehensive Coverage**: Generate every possible meaningful chart combination
+- **Variation Inclusion**: Include similar charts with different perspectives
+- **Advanced Analytics**: Provide experimental and business-focused visualizations
+- **Categorization**: Organize charts by analytical purpose and complexity level
 
 ## Error Handling
 

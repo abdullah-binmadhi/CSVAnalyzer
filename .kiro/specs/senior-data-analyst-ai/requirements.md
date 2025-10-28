@@ -19,18 +19,18 @@ The Senior Data Analyst AI is an automated exploratory data analysis (EDA) syste
 
 ### Requirement 2
 
-**User Story:** As a data analyst, I want the system to generate as many meaningful visualization recommendations as possible, so that I can explore all potential ways to visualize my data.
+**User Story:** As a data analyst, I want the system to generate ALL visualization recommendations based on detected patterns, so that I can explore every possible way to visualize my data including variations and duplications.
 
 #### Acceptance Criteria
 
-1. WHEN the system analyzes the dataset THEN it SHALL generate all possible distinct visualization recommendations until no more unique charts can be created
+1. WHEN the system analyzes the dataset THEN it SHALL generate ALL possible visualization recommendations based on the number of chart recommendations detected
 2. WHEN generating visualizations THEN each recommendation SHALL include title, type, xAxis, and yAxis specifications
 3. WHEN selecting chart types THEN the system SHALL only recommend 'bar', 'line', or 'scatter' charts
 4. WHEN recommending bar charts THEN the system SHALL use them for categorical-vs-numeric grouping
 5. WHEN recommending line charts THEN the system SHALL use them for time-series or trend analysis
 6. WHEN recommending scatter charts THEN the system SHALL use them for numerical correlations
-7. WHEN creating visualization diversity THEN the system SHALL ensure each chart highlights different aspects (distribution, trend, comparison, correlation, composition)
-8. WHEN reaching the limit of unique visualizations THEN the system SHALL stop generating charts to avoid duplicates
+7. WHEN creating visualization diversity THEN the system SHALL generate charts for different aspects (distribution, trend, comparison, correlation, composition) even if some appear similar
+8. WHEN the system detects potential for multiple chart variations THEN it SHALL generate all variations including duplications to ensure comprehensive coverage
 
 ### Requirement 3
 
@@ -81,3 +81,17 @@ The Senior Data Analyst AI is an automated exploratory data analysis (EDA) syste
 3. WHEN recommending visualizations THEN the system SHALL prioritize charts that reveal business-relevant patterns
 4. WHEN summarizing findings THEN the system SHALL connect technical insights to business value
 5. WHEN suggesting next steps THEN the system SHALL provide concrete analytical directions
+
+### Requirement 7
+
+**User Story:** As a data analyst, I want a "Generate More Charts" button that creates additional advanced visualizations, so that I can explore extended analytical possibilities beyond the initial recommendations.
+
+#### Acceptance Criteria
+
+1. WHEN the initial analysis is complete THEN the system SHALL display a "Generate More Charts" button
+2. WHEN the user clicks "Generate More Charts" THEN the system SHALL generate additional advanced chart types including distribution analysis, correlation matrices, performance dashboards, and segmentation charts
+3. WHEN generating additional charts THEN the system SHALL include experimental visualizations like box plots, bubble charts, waterfall analysis, and trend comparisons
+4. WHEN creating extended charts THEN each SHALL include descriptive information about its analytical purpose
+5. WHEN displaying additional charts THEN they SHALL be clearly distinguished from the initial recommendations
+6. WHEN the additional chart generation is complete THEN the system SHALL show the total count of additional charts generated
+7. WHEN generating more charts THEN the system SHALL categorize them by type (distribution, trend, correlation, business, performance, segmentation)
