@@ -7,6 +7,46 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
+        :root {
+            /* Cheerful Mode Colors */
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --header-gradient-start: #4facfe;
+            --header-gradient-end: #00f2fe;
+            --container-bg: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-color: #eeeeee;
+            --card-bg: #f8f9fa;
+            --stat-card-bg: #ffffff;
+            --upload-hover-bg: #f8f9ff;
+            --upload-dragover-bg: #f0f8ff;
+            --btn-gradient-start: #4facfe;
+            --btn-gradient-end: #00f2fe;
+            --spinner-color: #4facfe;
+            --stat-number-color: #4facfe;
+        }
+        
+        body.dark-mode {
+            /* Dark Mode Colors */
+            --bg-gradient-start: #1a1a2e;
+            --bg-gradient-end: #16213e;
+            --header-gradient-start: #0f3460;
+            --header-gradient-end: #16213e;
+            --container-bg: #1e1e2f;
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --border-color: #2d2d3f;
+            --card-bg: #252538;
+            --stat-card-bg: #2a2a3e;
+            --upload-hover-bg: #2d2d44;
+            --upload-dragover-bg: #32324a;
+            --btn-gradient-start: #3b82f6;
+            --btn-gradient-end: #2563eb;
+            --spinner-color: #3b82f6;
+            --stat-number-color: #60a5fa;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -15,25 +55,61 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
             min-height: 100vh;
             padding: 20px;
+            transition: background 0.3s ease;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
+            background: var(--container-bg);
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
+            transition: background 0.3s ease;
         }
         
         .header {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, var(--header-gradient-start) 0%, var(--header-gradient-end) 100%);
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
+            transition: background 0.3s ease;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 8px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .theme-toggle-icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .theme-toggle-text {
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
         
         .header h1 {
@@ -49,11 +125,17 @@
         .upload-section {
             padding: 40px;
             text-align: center;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border-color);
+            transition: border-color 0.3s ease;
+        }
+        
+        .upload-section h2 {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
         
         .file-upload {
-            border: 3px dashed #ddd;
+            border: 3px dashed var(--border-color);
             border-radius: 15px;
             padding: 40px;
             margin: 20px 0;
@@ -61,14 +143,19 @@
             cursor: pointer;
         }
         
+        .file-upload p {
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+        
         .file-upload:hover {
-            border-color: #4facfe;
-            background: #f8f9ff;
+            border-color: var(--btn-gradient-start);
+            background: var(--upload-hover-bg);
         }
         
         .file-upload.dragover {
-            border-color: #4facfe;
-            background: #f0f8ff;
+            border-color: var(--btn-gradient-start);
+            background: var(--upload-dragover-bg);
         }
         
         .upload-icon {
@@ -79,14 +166,14 @@
         }
         
         .btn {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, var(--btn-gradient-start) 0%, var(--btn-gradient-end) 100%);
             color: white;
             border: none;
             padding: 12px 30px;
             border-radius: 25px;
             font-size: 1rem;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
         }
         
         .btn:hover {
@@ -102,6 +189,12 @@
         .results-section {
             padding: 40px;
             display: none;
+        }
+        
+        .results-section h2,
+        .results-section h3 {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
         }
         
         .charts-grid {
@@ -127,21 +220,23 @@
         }
         
         .chart-card {
-            background: #f8f9fa;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             height: 420px;
             display: flex;
             flex-direction: column;
+            transition: background 0.3s ease;
         }
         
         .chart-title {
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 15px;
-            color: #333;
+            color: var(--text-primary);
             flex-shrink: 0;
+            transition: color 0.3s ease;
         }
 
         .chart-container {
@@ -154,16 +249,18 @@
         .chart-info {
             flex-shrink: 0;
             padding-top: 15px;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid var(--border-color);
             font-size: 0.9rem;
-            color: #666;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
         }
         
         .report-section {
-            background: #f8f9fa;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 30px;
             margin-top: 30px;
+            transition: background 0.3s ease;
         }
         
         .report-content {
@@ -178,14 +275,20 @@
             padding: 40px;
         }
         
+        .loading p {
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+        
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #4facfe;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--spinner-color);
             border-radius: 50%;
             width: 50px;
             height: 50px;
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
+            transition: all 0.3s ease;
         }
         
         @keyframes spin {
@@ -201,28 +304,45 @@
         }
         
         .stat-card {
-            background: white;
+            background: var(--stat-card-bg);
             border-radius: 10px;
             padding: 20px;
             text-align: center;
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: background 0.3s ease;
         }
         
         .stat-number {
             font-size: 2rem;
             font-weight: bold;
-            color: #4facfe;
+            color: var(--stat-number-color);
+            transition: color 0.3s ease;
         }
         
         .stat-label {
-            color: #666;
+            color: var(--text-secondary);
             margin-top: 5px;
+            transition: color 0.3s ease;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
+            <div class="theme-toggle" id="themeToggle">
+                <svg class="theme-toggle-icon" id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+                <span class="theme-toggle-text" id="themeText">Cheerful</span>
+            </div>
             <h1>Data Bloom</h1>
             <p>Upload your CSV file and get instant data insights, visualizations, and business intelligence</p>
         </div>
@@ -273,6 +393,47 @@
 
     <script>
         let csvData = null;
+        
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        
+        // Check for saved theme preference or default to cheerful
+        const currentTheme = localStorage.getItem('theme') || 'cheerful';
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            updateThemeIcon('dark');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'cheerful');
+            updateThemeIcon(isDark ? 'dark' : 'cheerful');
+        });
+        
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.innerHTML = `
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="white" stroke="white" stroke-width="2"/>
+                `;
+                themeText.textContent = 'Dark';
+            } else {
+                themeIcon.innerHTML = `
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                `;
+                themeText.textContent = 'Cheerful';
+            }
+        }
         
         // File upload handling
         const fileUpload = document.getElementById('fileUpload');
