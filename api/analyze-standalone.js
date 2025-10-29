@@ -1,5 +1,5 @@
 /**
- * Standalone Vercel API Route for Senior Data Analyst AI
+ * Standalone Vercel API Route for Data Bloom
  * This version includes the core analysis logic directly
  */
 
@@ -321,111 +321,171 @@ function analyzeDatasetSimple(data) {
     scatter: charts.filter(c => c.type === 'scatter').length
   };
   
-  // Helper function to format column type with emoji
-  const getTypeEmoji = (type) => {
-    switch(type) {
-      case 'numerical': return '🔢';
-      case 'categorical': return '🏷️';
-      case 'datetime': return '📅';
-      case 'boolean': return '✓';
-      case 'text': return '📝';
-      default: return '•';
-    }
+  // Helper function to get type badge with color
+  const getTypeBadge = (type) => {
+    const badges = {
+      numerical: '<span style="background: #4facfe; color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: 500;">Numerical</span>',
+      categorical: '<span style="background: #43e97b; color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: 500;">Categorical</span>',
+      datetime: '<span style="background: #667eea; color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: 500;">DateTime</span>',
+      boolean: '<span style="background: #f093fb; color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: 500;">Boolean</span>',
+      text: '<span style="background: #feca57; color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: 500;">Text</span>'
+    };
+    return badges[type] || `<span style="background: #95a5a6; color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: 500;">${type}</span>`;
   };
 
-  const report = `# 📊 Comprehensive Data Analysis Report
+  const report = `# Comprehensive Data Analysis Report
 
 ---
 
-## 📋 Executive Summary
+## Executive Summary
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white; margin: 20px 0;">
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; border-radius: 12px; color: white; margin: 20px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
 
-### Dataset Overview
-Your dataset contains **${headers.length} columns** with **${sampleData.length} sample rows**, providing comprehensive analytical opportunities.
+<h3 style="margin-top: 0; font-size: 1.3em; font-weight: 600;">Dataset Overview</h3>
+<p style="font-size: 1.05em; line-height: 1.6; margin: 15px 0;">Your dataset contains <strong>${headers.length} columns</strong> with <strong>${sampleData.length} sample rows</strong>, providing comprehensive analytical opportunities.</p>
 
-### Data Composition at a Glance
+<h3 style="margin-top: 25px; margin-bottom: 15px; font-size: 1.2em; font-weight: 600;">Data Composition</h3>
 
-| Category | Count | Columns |
-|----------|-------|---------|
-| 🔢 **Numerical** | ${numericalCols.length} | ${numericalCols.length > 0 ? numericalCols.map(c => c.name).join(', ') : 'None'} |
-| 🏷️ **Categorical** | ${categoricalCols.length} | ${categoricalCols.length > 0 ? categoricalCols.map(c => c.name).join(', ') : 'None'} |
-| 📅 **DateTime** | ${datetimeCols.length} | ${datetimeCols.length > 0 ? datetimeCols.map(c => c.name).join(', ') : 'None'} |
-| ✓ **Boolean** | ${booleanCols.length} | ${booleanCols.length > 0 ? booleanCols.map(c => c.name).join(', ') : 'None'} |
+<div style="background: rgba(255,255,255,0.15); border-radius: 8px; padding: 15px; backdrop-filter: blur(10px);">
+<table style="width: 100%; color: white; border-collapse: collapse;">
+<tr style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+<td style="padding: 10px 0; font-weight: 500;">Numerical</td>
+<td style="padding: 10px 0; text-align: right;"><strong>${numericalCols.length}</strong></td>
+<td style="padding: 10px 0 10px 15px; font-size: 0.9em; opacity: 0.9;">${numericalCols.length > 0 ? numericalCols.map(c => c.name).join(', ') : 'None'}</td>
+</tr>
+<tr style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+<td style="padding: 10px 0; font-weight: 500;">Categorical</td>
+<td style="padding: 10px 0; text-align: right;"><strong>${categoricalCols.length}</strong></td>
+<td style="padding: 10px 0 10px 15px; font-size: 0.9em; opacity: 0.9;">${categoricalCols.length > 0 ? categoricalCols.map(c => c.name).join(', ') : 'None'}</td>
+</tr>
+<tr style="border-bottom: 1px solid rgba(255,255,255,0.2);">
+<td style="padding: 10px 0; font-weight: 500;">DateTime</td>
+<td style="padding: 10px 0; text-align: right;"><strong>${datetimeCols.length}</strong></td>
+<td style="padding: 10px 0 10px 15px; font-size: 0.9em; opacity: 0.9;">${datetimeCols.length > 0 ? datetimeCols.map(c => c.name).join(', ') : 'None'}</td>
+</tr>
+<tr>
+<td style="padding: 10px 0; font-weight: 500;">Boolean</td>
+<td style="padding: 10px 0; text-align: right;"><strong>${booleanCols.length}</strong></td>
+<td style="padding: 10px 0 10px 15px; font-size: 0.9em; opacity: 0.9;">${booleanCols.length > 0 ? booleanCols.map(c => c.name).join(', ') : 'None'}</td>
+</tr>
+</table>
+</div>
 
 </div>
 
 ---
 
-## 🔍 Column Analysis
+## Column Analysis
 
-<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-<thead style="background: #f8f9fa;">
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden;">
+<thead style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
 <tr>
-<th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Column Name</th>
-<th style="padding: 12px; text-align: center; border-bottom: 2px solid #dee2e6;">Type</th>
-<th style="padding: 12px; text-align: center; border-bottom: 2px solid #dee2e6;">Unique Values</th>
-<th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Sample Data</th>
+<th style="padding: 14px; text-align: left; border-bottom: 2px solid #dee2e6; font-weight: 600; color: #495057;">Column Name</th>
+<th style="padding: 14px; text-align: center; border-bottom: 2px solid #dee2e6; font-weight: 600; color: #495057;">Type</th>
+<th style="padding: 14px; text-align: center; border-bottom: 2px solid #dee2e6; font-weight: 600; color: #495057;">Unique Values</th>
+<th style="padding: 14px; text-align: left; border-bottom: 2px solid #dee2e6; font-weight: 600; color: #495057;">Sample Data</th>
 </tr>
 </thead>
 <tbody>
-${columns.map((col, idx) => `<tr style="background: ${idx % 2 === 0 ? '#ffffff' : '#f8f9fa'};">
-<td style="padding: 10px; border-bottom: 1px solid #dee2e6;"><strong>${col.name}</strong></td>
-<td style="padding: 10px; text-align: center; border-bottom: 1px solid #dee2e6;">${getTypeEmoji(col.type)} ${col.type}</td>
-<td style="padding: 10px; text-align: center; border-bottom: 1px solid #dee2e6;">${col.uniqueValues}</td>
-<td style="padding: 10px; border-bottom: 1px solid #dee2e6; font-size: 0.9em; color: #666;">${col.sampleValues.slice(0, 3).join(', ')}${col.sampleValues.length > 3 ? '...' : ''}</td>
+${columns.map((col, idx) => `<tr style="background: ${idx % 2 === 0 ? '#ffffff' : '#f8f9fa'}; transition: background 0.2s;">
+<td style="padding: 12px 14px; border-bottom: 1px solid #e9ecef;"><strong style="color: #2c3e50;">${col.name}</strong></td>
+<td style="padding: 12px 14px; text-align: center; border-bottom: 1px solid #e9ecef;">${getTypeBadge(col.type)}</td>
+<td style="padding: 12px 14px; text-align: center; border-bottom: 1px solid #e9ecef; color: #495057; font-weight: 500;">${col.uniqueValues}</td>
+<td style="padding: 12px 14px; border-bottom: 1px solid #e9ecef; font-size: 0.9em; color: #6c757d;">${col.sampleValues.slice(0, 3).join(', ')}${col.sampleValues.length > 3 ? '...' : ''}</td>
 </tr>`).join('\n')}
 </tbody>
 </table>
 
 ---
 
-## 📈 Visualization Strategy
+## Visualization Strategy
 
-<div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #4facfe; margin: 20px 0;">
+<div style="background: #f8f9fa; padding: 25px; border-radius: 12px; border-left: 4px solid #4facfe; margin: 20px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
 
-### Generated Visualizations Summary
+<h3 style="margin-top: 0; color: #2c3e50; font-size: 1.2em; font-weight: 600;">Generated Visualizations Summary</h3>
 
-We've created **${charts.length} comprehensive visualizations** across **${chartTypes.length} chart types** to explore your data from multiple analytical perspectives.
+<p style="color: #495057; line-height: 1.6; margin: 15px 0;">We've created <strong style="color: #4facfe;">${charts.length} comprehensive visualizations</strong> across <strong style="color: #4facfe;">${chartTypes.length} chart types</strong> to explore your data from multiple analytical perspectives.</p>
 
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 20px 0;">
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 25px 0;">
 
-<div style="background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-<div style="font-size: 2em;">📊</div>
-<div style="font-size: 1.5em; font-weight: bold; color: #4facfe; margin: 10px 0;">${chartsByType.bar}</div>
-<div style="color: #666; font-size: 0.9em;">Bar Charts</div>
-<div style="color: #999; font-size: 0.8em; margin-top: 5px;">Distributions & Comparisons</div>
+<div style="background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 3px 8px rgba(0,0,0,0.08); border-top: 3px solid #4facfe;">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" style="margin-bottom: 12px;">
+<rect x="3" y="3" width="4" height="18" fill="#4facfe" rx="1"/>
+<rect x="10" y="8" width="4" height="13" fill="#4facfe" rx="1"/>
+<rect x="17" y="5" width="4" height="16" fill="#4facfe" rx="1"/>
+</svg>
+<div style="font-size: 2em; font-weight: bold; color: #4facfe; margin: 10px 0;">${chartsByType.bar}</div>
+<div style="color: #495057; font-size: 0.95em; font-weight: 600;">Bar Charts</div>
+<div style="color: #6c757d; font-size: 0.85em; margin-top: 8px; line-height: 1.4;">Distributions & Comparisons</div>
 </div>
 
-<div style="background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-<div style="font-size: 2em;">📈</div>
-<div style="font-size: 1.5em; font-weight: bold; color: #43e97b; margin: 10px 0;">${chartsByType.line}</div>
-<div style="color: #666; font-size: 0.9em;">Line Charts</div>
-<div style="color: #999; font-size: 0.8em; margin-top: 5px;">Trends & Time-Series</div>
+<div style="background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 3px 8px rgba(0,0,0,0.08); border-top: 3px solid #43e97b;">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" style="margin-bottom: 12px;">
+<path d="M3 20L8 12L13 16L21 4" stroke="#43e97b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="3" cy="20" r="2" fill="#43e97b"/>
+<circle cx="8" cy="12" r="2" fill="#43e97b"/>
+<circle cx="13" cy="16" r="2" fill="#43e97b"/>
+<circle cx="21" cy="4" r="2" fill="#43e97b"/>
+</svg>
+<div style="font-size: 2em; font-weight: bold; color: #43e97b; margin: 10px 0;">${chartsByType.line}</div>
+<div style="color: #495057; font-size: 0.95em; font-weight: 600;">Line Charts</div>
+<div style="color: #6c757d; font-size: 0.85em; margin-top: 8px; line-height: 1.4;">Trends & Time-Series</div>
 </div>
 
-<div style="background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-<div style="font-size: 2em;">🔍</div>
-<div style="font-size: 1.5em; font-weight: bold; color: #667eea; margin: 10px 0;">${chartsByType.scatter}</div>
-<div style="color: #666; font-size: 0.9em;">Scatter Plots</div>
-<div style="color: #999; font-size: 0.8em; margin-top: 5px;">Correlations & Relationships</div>
+<div style="background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 3px 8px rgba(0,0,0,0.08); border-top: 3px solid #667eea;">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" style="margin-bottom: 12px;">
+<circle cx="6" cy="6" r="2.5" fill="#667eea"/>
+<circle cx="18" cy="6" r="2" fill="#667eea"/>
+<circle cx="9" cy="12" r="2" fill="#667eea"/>
+<circle cx="15" cy="12" r="2.5" fill="#667eea"/>
+<circle cx="6" cy="18" r="2" fill="#667eea"/>
+<circle cx="18" cy="18" r="2.5" fill="#667eea"/>
+<circle cx="12" cy="9" r="1.5" fill="#667eea"/>
+<circle cx="12" cy="15" r="1.5" fill="#667eea"/>
+</svg>
+<div style="font-size: 2em; font-weight: bold; color: #667eea; margin: 10px 0;">${chartsByType.scatter}</div>
+<div style="color: #495057; font-size: 0.95em; font-weight: 600;">Scatter Plots</div>
+<div style="color: #6c757d; font-size: 0.85em; margin-top: 8px; line-height: 1.4;">Correlations & Relationships</div>
 </div>
 
 </div>
 
-### Chart Categories Breakdown
+<h3 style="color: #2c3e50; font-size: 1.1em; font-weight: 600; margin-top: 25px; margin-bottom: 15px;">Chart Categories Breakdown</h3>
 
-| Chart Type | Purpose | Count |
-|------------|---------|-------|
-| 📊 **Bar Charts** | Distribution analysis, categorical comparisons, business metrics | **${chartsByType.bar}** |
-| 📈 **Line Charts** | Trend analysis, time-series patterns, performance tracking | **${chartsByType.line}** |
-| 🔍 **Scatter Plots** | Correlation discovery, relationship mapping, multi-dimensional analysis | **${chartsByType.scatter}** |
+<table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden;">
+<thead style="background: #e9ecef;">
+<tr>
+<th style="padding: 12px; text-align: left; font-weight: 600; color: #495057;">Chart Type</th>
+<th style="padding: 12px; text-align: left; font-weight: 600; color: #495057;">Purpose</th>
+<th style="padding: 12px; text-align: center; font-weight: 600; color: #495057;">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom: 1px solid #e9ecef;">
+<td style="padding: 12px;"><strong style="color: #4facfe;">Bar Charts</strong></td>
+<td style="padding: 12px; color: #6c757d;">Distribution analysis, categorical comparisons, business metrics</td>
+<td style="padding: 12px; text-align: center;"><strong style="color: #4facfe;">${chartsByType.bar}</strong></td>
+</tr>
+<tr style="border-bottom: 1px solid #e9ecef;">
+<td style="padding: 12px;"><strong style="color: #43e97b;">Line Charts</strong></td>
+<td style="padding: 12px; color: #6c757d;">Trend analysis, time-series patterns, performance tracking</td>
+<td style="padding: 12px; text-align: center;"><strong style="color: #43e97b;">${chartsByType.line}</strong></td>
+</tr>
+<tr>
+<td style="padding: 12px;"><strong style="color: #667eea;">Scatter Plots</strong></td>
+<td style="padding: 12px; color: #6c757d;">Correlation discovery, relationship mapping, multi-dimensional analysis</td>
+<td style="padding: 12px; text-align: center;"><strong style="color: #667eea;">${chartsByType.scatter}</strong></td>
+</tr>
+</tbody>
+</table>
 
 </div>
 
 ---
 
-*Analysis powered by Senior Data Analyst AI • Enhanced Visualization Engine v2.0*`;
+<div style="text-align: center; color: #6c757d; font-size: 0.9em; margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+Analysis powered by <strong style="color: #667eea;">Data Bloom</strong> • Enhanced Visualization Engine v2.0
+</div>`;
 
   return {
     charts_to_generate: charts, // Return ALL generated charts (no limit)

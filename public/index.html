@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Senior Data Analyst AI</title>
+    <title>Data Bloom</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
@@ -72,9 +72,10 @@
         }
         
         .upload-icon {
-            font-size: 3rem;
-            color: #ddd;
             margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         .btn {
@@ -222,19 +223,26 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🤖 Senior Data Analyst AI</h1>
+            <h1>Data Bloom</h1>
             <p>Upload your CSV file and get instant data insights, visualizations, and business intelligence</p>
         </div>
         
         <div class="upload-section">
             <h2>Upload Your CSV File</h2>
             <div class="file-upload" id="fileUpload">
-                <div class="upload-icon">📊</div>
+                <div class="upload-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" style="opacity: 0.3;">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#4facfe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="14 2 14 8 20 8" stroke="#4facfe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="8" y1="13" x2="16" y2="13" stroke="#4facfe" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="8" y1="17" x2="16" y2="17" stroke="#4facfe" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
                 <p><strong>Drop your CSV file here</strong> or click to browse</p>
                 <p style="color: #666; margin-top: 10px;">Supports files up to 10MB</p>
             </div>
             <input type="file" id="fileInput" accept=".csv" style="display: none;">
-            <button class="btn" id="analyzeBtn" disabled>🚀 Analyze Data</button>
+            <button class="btn" id="analyzeBtn" disabled>Analyze Data</button>
         </div>
         
         <div class="loading" id="loading">
@@ -243,19 +251,19 @@
         </div>
         
         <div class="results-section" id="results">
-            <h2>📊 Analysis Results</h2>
+            <h2>Analysis Results</h2>
             
             <div class="stats-grid" id="statsGrid">
                 <!-- Stats will be populated here -->
             </div>
             
-            <h3>📈 Recommended Visualizations</h3>
+            <h3>Recommended Visualizations</h3>
             <div class="charts-grid" id="chartsGrid">
                 <!-- Charts will be populated here -->
             </div>
             
             <div class="report-section">
-                <h3>📋 Detailed Analysis Report</h3>
+                <h3>Detailed Analysis Report</h3>
                 <div class="report-content" id="reportContent">
                     <!-- Report will be populated here -->
                 </div>
@@ -300,7 +308,12 @@
                 csvData = parseCSV(e.target.result);
                 analyzeBtn.disabled = false;
                 fileUpload.innerHTML = `
-                    <div class="upload-icon">✅</div>
+                    <div class="upload-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="#43e97b" stroke-width="2" fill="none"/>
+                            <path d="M8 12l2 2 4-4" stroke="#43e97b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
                     <p><strong>${file.name}</strong> loaded successfully</p>
                     <p style="color: #666;">Ready for analysis</p>
                 `;

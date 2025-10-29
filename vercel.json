@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "senior-data-analyst-ai",
+  "name": "data-bloom",
   "buildCommand": "npm run build",
   "functions": {
     "api/**/*.js": {

@@ -1,7 +1,7 @@
 {
-  "name": "senior-data-analyst-ai",
+  "name": "data-bloom",
   "version": "1.0.0",
-  "description": "Automated exploratory data analysis system that transforms CSV data into actionable business insights and visualization recommendations",
+  "description": "Data Bloom - Automated exploratory data analysis system that transforms CSV data into actionable business insights and visualization recommendations",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -27,16 +27,16 @@
     "typescript",
     "nodejs"
   ],
-  "author": "Senior Data Analyst AI Team",
+  "author": "Data Bloom Team",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/senior-data-analyst-ai.git"
+    "url": "https://github.com/yourusername/data-bloom.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/senior-data-analyst-ai/issues"
+    "url": "https://github.com/yourusername/data-bloom/issues"
   },
-  "homepage": "https://github.com/yourusername/senior-data-analyst-ai#readme",
+  "homepage": "https://github.com/yourusername/data-bloom#readme",
   "dependencies": {
     "ts-node": "^10.9.0",
     "typescript": "^5.0.0"
