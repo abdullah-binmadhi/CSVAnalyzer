@@ -301,6 +301,252 @@
             transition: border-color 0.3s ease;
         }
         
+        /* Report-specific styling for dark mode adaptation */
+        .report-exec-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 12px;
+            color: white;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background 0.3s ease;
+        }
+        
+        body.dark-mode .report-exec-summary {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+        }
+        
+        .report-composition-table {
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        body.dark-mode .report-composition-table {
+            background: rgba(255,255,255,0.08);
+        }
+        
+        .report-column-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .report-table-head {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        body.dark-mode .report-table-head {
+            background: linear-gradient(135deg, #2a2a3e 0%, #252538 100%);
+        }
+        
+        .report-table-head th {
+            color: #495057;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .report-table-head th {
+            color: #e4e4e7;
+        }
+        
+        .report-table-row.even {
+            background: #ffffff;
+            transition: background 0.3s ease;
+        }
+        
+        .report-table-row.odd {
+            background: #f8f9fa;
+            transition: background 0.3s ease;
+        }
+        
+        body.dark-mode .report-table-row.even {
+            background: #2a2a3e;
+        }
+        
+        body.dark-mode .report-table-row.odd {
+            background: #252538;
+        }
+        
+        .report-col-name {
+            color: #2c3e50;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .report-col-name {
+            color: #e4e4e7;
+        }
+        
+        .report-unique-val {
+            color: #495057;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .report-unique-val {
+            color: #a1a1aa;
+        }
+        
+        .report-sample-data {
+            color: #6c757d;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .report-sample-data {
+            color: #71717a;
+        }
+        
+        .report-viz-strategy {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #4facfe;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-mode .report-viz-strategy {
+            background: #252538;
+            border-left-color: #60a5fa;
+        }
+        
+        .report-viz-title {
+            color: #2c3e50;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .report-viz-title {
+            color: #e4e4e7;
+        }
+        
+        .report-viz-desc {
+            color: #495057;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .report-viz-desc {
+            color: #a1a1aa;
+        }
+        
+        .report-highlight {
+            color: #4facfe;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .report-highlight {
+            color: #60a5fa;
+        }
+        
+        .report-chart-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            border-top: 3px solid #4facfe;
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-mode .report-chart-card {
+            background: #2a2a3e;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        }
+        
+        .report-chart-label {
+            color: #495057;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .report-chart-label {
+            color: #e4e4e7;
+        }
+        
+        .report-chart-desc {
+            color: #6c757d;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .report-chart-desc {
+            color: #a1a1aa;
+        }
+        
+        .report-breakdown-title {
+            color: #2c3e50;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .report-breakdown-title {
+            color: #e4e4e7;
+        }
+        
+        .report-breakdown-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: background 0.3s ease;
+        }
+        
+        body.dark-mode .report-breakdown-table {
+            background: #2a2a3e;
+        }
+        
+        .report-breakdown-head {
+            background: #e9ecef;
+            transition: background 0.3s ease;
+        }
+        
+        body.dark-mode .report-breakdown-head {
+            background: #1e1e2f;
+        }
+        
+        .report-breakdown-head th {
+            color: #495057;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .report-breakdown-head th {
+            color: #e4e4e7;
+        }
+        
+        .report-breakdown-row {
+            border-bottom: 1px solid #e9ecef;
+            transition: border-color 0.3s ease;
+        }
+        
+        body.dark-mode .report-breakdown-row {
+            border-bottom-color: #2d2d3f;
+        }
+        
+        .report-breakdown-purpose {
+            color: #6c757d;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .report-breakdown-purpose {
+            color: #a1a1aa;
+        }
+        
+        .report-footer {
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-mode .report-footer {
+            color: #a1a1aa;
+            background: #252538;
+        }
+        
         .loading {
             display: none;
             text-align: center;
