@@ -269,6 +269,38 @@
             line-height: 1.6;
         }
         
+        /* Report content styling for dark mode */
+        .report-content h1,
+        .report-content h2,
+        .report-content h3,
+        .report-content h4 {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+        
+        .report-content p,
+        .report-content li,
+        .report-content td,
+        .report-content th {
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+        
+        .report-content table {
+            border-color: var(--border-color);
+            transition: border-color 0.3s ease;
+        }
+        
+        .report-content strong {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+        
+        .report-content hr {
+            border-color: var(--border-color);
+            transition: border-color 0.3s ease;
+        }
+        
         .loading {
             display: none;
             text-align: center;
@@ -393,6 +425,8 @@
 
     <script>
         let csvData = null;
+        let currentCharts = [];
+        let chartInstances = [];
         
         // Theme toggle functionality
         const themeToggle = document.getElementById('themeToggle');
@@ -411,6 +445,11 @@
             const isDark = document.body.classList.contains('dark-mode');
             localStorage.setItem('theme', isDark ? 'dark' : 'cheerful');
             updateThemeIcon(isDark ? 'dark' : 'cheerful');
+            
+            // Regenerate charts if results are displayed
+            if (document.getElementById('results').style.display === 'block') {
+                regenerateCharts();
+            }
         });
         
         function updateThemeIcon(theme) {
@@ -548,6 +587,9 @@
             document.getElementById('loading').style.display = 'none';
             document.getElementById('results').style.display = 'block';
             
+            // Store charts for regeneration
+            currentCharts = results.charts_to_generate;
+            
             // Display stats
             const statsGrid = document.getElementById('statsGrid');
             statsGrid.innerHTML = `
@@ -570,10 +612,22 @@
             `;
             
             // Display charts
+            renderCharts();
+            
+            // Display report
+            const reportContent = document.getElementById('reportContent');
+            reportContent.innerHTML = marked.parse(results.full_analysis_report_markdown);
+        }
+        
+        function renderCharts() {
             const chartsGrid = document.getElementById('chartsGrid');
             chartsGrid.innerHTML = '';
             
-            results.charts_to_generate.forEach((chart, index) => {
+            // Destroy existing chart instances
+            chartInstances.forEach(chart => chart.destroy());
+            chartInstances = [];
+            
+            currentCharts.forEach((chart, index) => {
                 const chartCard = document.createElement('div');
                 chartCard.className = 'chart-card';
                 chartCard.innerHTML = `
@@ -589,22 +643,35 @@
                 `;
                 chartsGrid.appendChild(chartCard);
                 
-                // Create sample chart
-                createSampleChart(`chart${index}`, chart);
+                // Create sample chart and store instance
+                const chartInstance = createSampleChart(`chart${index}`, chart);
+                chartInstances.push(chartInstance);
             });
-            
-            // Display report
-            const reportContent = document.getElementById('reportContent');
-            reportContent.innerHTML = marked.parse(results.full_analysis_report_markdown);
+        }
+        
+        function regenerateCharts() {
+            if (currentCharts.length > 0) {
+                renderCharts();
+            }
         }
         
         function createSampleChart(canvasId, chartConfig) {
             const ctx = document.getElementById(canvasId).getContext('2d');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            
+            // Dark mode colors
+            const darkColors = ['#60a5fa', '#3b82f6', '#8b5cf6', '#a78bfa', '#ec4899', '#f472b6'];
+            const cheerfulColors = ['#4facfe', '#00f2fe', '#43e97b', '#38f9d7', '#667eea', '#764ba2'];
+            const colors = isDarkMode ? darkColors : cheerfulColors;
+            
+            // Grid and text colors based on theme
+            const gridColor = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+            const textColor = isDarkMode ? '#a1a1aa' : '#666666';
+            const primaryColor = isDarkMode ? '#60a5fa' : '#4facfe';
             
             // Generate sample data based on chart type
             let chartData;
             if (chartConfig.type === 'bar') {
-                const colors = ['#4facfe', '#00f2fe', '#43e97b', '#38f9d7', '#667eea', '#764ba2'];
                 const dataPoints = Array.from({length: 5}, () => Math.floor(Math.random() * 100) + 20);
                 
                 chartData = {
@@ -629,12 +696,12 @@
                     datasets: [{
                         label: chartConfig.yAxis,
                         data: dataPoints,
-                        borderColor: '#4facfe',
-                        backgroundColor: 'rgba(79, 172, 254, 0.1)',
+                        borderColor: primaryColor,
+                        backgroundColor: isDarkMode ? 'rgba(96, 165, 250, 0.1)' : 'rgba(79, 172, 254, 0.1)',
                         fill: true,
                         tension: 0.4,
-                        pointBackgroundColor: '#4facfe',
-                        pointBorderColor: '#ffffff',
+                        pointBackgroundColor: primaryColor,
+                        pointBorderColor: isDarkMode ? '#252538' : '#ffffff',
                         pointBorderWidth: 2,
                         pointRadius: 5,
                         pointHoverRadius: 7
@@ -650,8 +717,8 @@
                     datasets: [{
                         label: `${chartConfig.yAxis} vs ${chartConfig.xAxis}`,
                         data: dataPoints,
-                        backgroundColor: 'rgba(79, 172, 254, 0.7)',
-                        borderColor: '#4facfe',
+                        backgroundColor: isDarkMode ? 'rgba(96, 165, 250, 0.7)' : 'rgba(79, 172, 254, 0.7)',
+                        borderColor: primaryColor,
                         borderWidth: 2,
                         pointRadius: 6,
                         pointHoverRadius: 8
@@ -659,7 +726,7 @@
                 };
             }
             
-            new Chart(ctx, {
+            return new Chart(ctx, {
                 type: chartConfig.type === 'scatter' ? 'scatter' : chartConfig.type,
                 data: chartData,
                 options: {
@@ -675,44 +742,53 @@
                             position: 'top',
                             labels: {
                                 boxWidth: 12,
-                                padding: 15
+                                padding: 15,
+                                color: textColor
                             }
                         },
                         tooltip: {
-                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            backgroundColor: isDarkMode ? 'rgba(30, 30, 47, 0.95)' : 'rgba(0,0,0,0.8)',
                             titleColor: 'white',
                             bodyColor: 'white',
-                            borderColor: '#4facfe',
+                            borderColor: primaryColor,
                             borderWidth: 1
                         }
                     },
                     scales: chartConfig.type !== 'scatter' ? {
                         x: {
                             grid: {
-                                color: 'rgba(0,0,0,0.1)'
+                                color: gridColor
                             },
                             ticks: {
-                                maxTicksLimit: 8
+                                maxTicksLimit: 8,
+                                color: textColor
                             }
                         },
                         y: {
                             beginAtZero: true,
                             grid: {
-                                color: 'rgba(0,0,0,0.1)'
+                                color: gridColor
                             },
                             ticks: {
-                                maxTicksLimit: 6
+                                maxTicksLimit: 6,
+                                color: textColor
                             }
                         }
                     } : {
                         x: {
                             grid: {
-                                color: 'rgba(0,0,0,0.1)'
+                                color: gridColor
+                            },
+                            ticks: {
+                                color: textColor
                             }
                         },
                         y: {
                             grid: {
-                                color: 'rgba(0,0,0,0.1)'
+                                color: gridColor
+                            },
+                            ticks: {
+                                color: textColor
                             }
                         }
                     },
