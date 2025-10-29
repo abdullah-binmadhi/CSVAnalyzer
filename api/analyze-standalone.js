@@ -321,82 +321,111 @@ function analyzeDatasetSimple(data) {
     scatter: charts.filter(c => c.type === 'scatter').length
   };
   
-  const report = `# Comprehensive Data Analysis Report
+  // Helper function to format column type with emoji
+  const getTypeEmoji = (type) => {
+    switch(type) {
+      case 'numerical': return '🔢';
+      case 'categorical': return '🏷️';
+      case 'datetime': return '📅';
+      case 'boolean': return '✓';
+      case 'text': return '📝';
+      default: return '•';
+    }
+  };
 
-## Executive Summary
-This dataset contains **${headers.length} columns** with **${sampleData.length} sample rows**, offering rich analytical opportunities across multiple dimensions.
+  const report = `# 📊 Comprehensive Data Analysis Report
 
-**Data Composition:**
-- **Numerical Columns**: ${numericalCols.length} (${numericalCols.map(c => c.name).join(', ')})
-- **Categorical Columns**: ${categoricalCols.length} (${categoricalCols.map(c => c.name).join(', ')})
-- **DateTime Columns**: ${datetimeCols.length} (${datetimeCols.map(c => c.name).join(', ')})
-- **Boolean Columns**: ${booleanCols.length} (${booleanCols.map(c => c.name).join(', ')})
+---
 
-## Column Analysis
-${columns.map(col => `- **${col.name}**: ${col.type} (${col.uniqueValues} unique values)`).join('\n')}
+## 📋 Executive Summary
 
-## Visualization Strategy
-Generated **${charts.length} diverse visualizations** across ${chartTypes.length} chart types:
-- **📊 Bar Charts**: ${chartsByType.bar} (distributions, comparisons, business analysis)
-- **📈 Line Charts**: ${chartsByType.line} (trends, time-series, performance tracking)
-- **🔍 Scatter Plots**: ${chartsByType.scatter} (correlations, relationships, multi-dimensional analysis)
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white; margin: 20px 0;">
 
-## Key Analytical Insights
-${numericalCols.length > 0 ? `- **Quantitative Analysis**: ${numericalCols.length} numerical variables enable statistical modeling and correlation analysis` : ''}
-${categoricalCols.length > 0 ? `- **Segmentation Opportunities**: ${categoricalCols.length} categorical variables support customer/product segmentation` : ''}
-${datetimeCols.length > 0 ? `- **Temporal Analysis**: ${datetimeCols.length} time-based variables enable trend forecasting and seasonality detection` : ''}
-${businessCols.length > 0 ? `- **Business Intelligence**: ${businessCols.length} business metrics detected for performance monitoring` : ''}
+### Dataset Overview
+Your dataset contains **${headers.length} columns** with **${sampleData.length} sample rows**, providing comprehensive analytical opportunities.
 
-## Recommended Analysis Approaches
+### Data Composition at a Glance
 
-### 1. Distribution Analysis
-${categoricalCols.length > 0 ? `Examine the distribution patterns in categorical variables to understand data balance and identify dominant categories.` : 'Limited categorical data available for distribution analysis.'}
+| Category | Count | Columns |
+|----------|-------|---------|
+| 🔢 **Numerical** | ${numericalCols.length} | ${numericalCols.length > 0 ? numericalCols.map(c => c.name).join(', ') : 'None'} |
+| 🏷️ **Categorical** | ${categoricalCols.length} | ${categoricalCols.length > 0 ? categoricalCols.map(c => c.name).join(', ') : 'None'} |
+| 📅 **DateTime** | ${datetimeCols.length} | ${datetimeCols.length > 0 ? datetimeCols.map(c => c.name).join(', ') : 'None'} |
+| ✓ **Boolean** | ${booleanCols.length} | ${booleanCols.length > 0 ? booleanCols.map(c => c.name).join(', ') : 'None'} |
 
-### 2. Correlation Analysis  
-${numericalCols.length >= 2 ? `Investigate relationships between ${numericalCols.length} numerical variables to identify key drivers and dependencies.` : 'Insufficient numerical data for correlation analysis.'}
+</div>
 
-### 3. Trend Analysis
-${datetimeCols.length > 0 ? `Analyze temporal patterns to identify trends, seasonality, and forecasting opportunities.` : 'Consider adding temporal dimensions for trend analysis.'}
+---
 
-### 4. Performance Monitoring
-${performanceCols.length > 0 ? `Track performance metrics across different segments to identify optimization opportunities.` : 'Consider defining performance KPIs for ongoing monitoring.'}
+## 🔍 Column Analysis
 
-## Strategic Business Questions
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+<thead style="background: #f8f9fa;">
+<tr>
+<th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Column Name</th>
+<th style="padding: 12px; text-align: center; border-bottom: 2px solid #dee2e6;">Type</th>
+<th style="padding: 12px; text-align: center; border-bottom: 2px solid #dee2e6;">Unique Values</th>
+<th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Sample Data</th>
+</tr>
+</thead>
+<tbody>
+${columns.map((col, idx) => `<tr style="background: ${idx % 2 === 0 ? '#ffffff' : '#f8f9fa'};">
+<td style="padding: 10px; border-bottom: 1px solid #dee2e6;"><strong>${col.name}</strong></td>
+<td style="padding: 10px; text-align: center; border-bottom: 1px solid #dee2e6;">${getTypeEmoji(col.type)} ${col.type}</td>
+<td style="padding: 10px; text-align: center; border-bottom: 1px solid #dee2e6;">${col.uniqueValues}</td>
+<td style="padding: 10px; border-bottom: 1px solid #dee2e6; font-size: 0.9em; color: #666;">${col.sampleValues.slice(0, 3).join(', ')}${col.sampleValues.length > 3 ? '...' : ''}</td>
+</tr>`).join('\n')}
+</tbody>
+</table>
 
-1. **What are the primary drivers of variation in your key metrics?**
-   - Focus on the relationships between ${numericalCols.slice(0, 3).map(c => c.name).join(', ')}
-   - Examine how ${categoricalCols.slice(0, 2).map(c => c.name).join(' and ')} influence outcomes
+---
 
-2. **Which segments or categories show the highest potential?**
-   - Analyze performance across ${categoricalCols.length > 0 ? categoricalCols[0].name : 'available segments'}
-   - Identify top-performing categories for resource allocation
+## 📈 Visualization Strategy
 
-3. **What trends should inform future strategy?**
-   ${datetimeCols.length > 0 ? `- Monitor temporal patterns in ${datetimeCols[0].name} data` : '- Consider collecting time-series data for trend analysis'}
-   - Track leading indicators for predictive insights
+<div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #4facfe; margin: 20px 0;">
 
-4. **How can data quality and collection be improved?**
-   - Enhance data granularity in areas with limited variation
-   - Consider additional variables that could explain performance differences
+### Generated Visualizations Summary
 
-## Next Steps for Analysis
+We've created **${charts.length} comprehensive visualizations** across **${chartTypes.length} chart types** to explore your data from multiple analytical perspectives.
 
-### Immediate Actions
-1. **Deploy Recommended Visualizations**: Implement the ${charts.length} generated charts in your dashboard
-2. **Statistical Analysis**: Conduct correlation analysis on numerical variables
-3. **Segmentation Study**: Deep-dive into categorical breakdowns
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 20px 0;">
 
-### Advanced Analytics
-1. **Predictive Modeling**: Build forecasting models using identified relationships
-2. **Anomaly Detection**: Monitor for unusual patterns in key metrics  
-3. **Optimization**: Use insights to improve business processes and outcomes
+<div style="background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+<div style="font-size: 2em;">📊</div>
+<div style="font-size: 1.5em; font-weight: bold; color: #4facfe; margin: 10px 0;">${chartsByType.bar}</div>
+<div style="color: #666; font-size: 0.9em;">Bar Charts</div>
+<div style="color: #999; font-size: 0.8em; margin-top: 5px;">Distributions & Comparisons</div>
+</div>
 
-## Technical Notes
-- **Processing Time**: Optimized for real-time analysis
-- **Chart Diversity**: ${((chartTypes.length / 3) * 100).toFixed(0)}% coverage of available chart types
-- **Data Coverage**: ${((columns.filter(c => c.uniqueValues > 1).length / columns.length) * 100).toFixed(0)}% of columns have analytical value
+<div style="background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+<div style="font-size: 2em;">📈</div>
+<div style="font-size: 1.5em; font-weight: bold; color: #43e97b; margin: 10px 0;">${chartsByType.line}</div>
+<div style="color: #666; font-size: 0.9em;">Line Charts</div>
+<div style="color: #999; font-size: 0.8em; margin-top: 5px;">Trends & Time-Series</div>
+</div>
 
-*Analysis generated by Senior Data Analyst AI - Enhanced Visualization Engine*`;
+<div style="background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+<div style="font-size: 2em;">🔍</div>
+<div style="font-size: 1.5em; font-weight: bold; color: #667eea; margin: 10px 0;">${chartsByType.scatter}</div>
+<div style="color: #666; font-size: 0.9em;">Scatter Plots</div>
+<div style="color: #999; font-size: 0.8em; margin-top: 5px;">Correlations & Relationships</div>
+</div>
+
+</div>
+
+### Chart Categories Breakdown
+
+| Chart Type | Purpose | Count |
+|------------|---------|-------|
+| 📊 **Bar Charts** | Distribution analysis, categorical comparisons, business metrics | **${chartsByType.bar}** |
+| 📈 **Line Charts** | Trend analysis, time-series patterns, performance tracking | **${chartsByType.line}** |
+| 🔍 **Scatter Plots** | Correlation discovery, relationship mapping, multi-dimensional analysis | **${chartsByType.scatter}** |
+
+</div>
+
+---
+
+*Analysis powered by Senior Data Analyst AI • Enhanced Visualization Engine v2.0*`;
 
   return {
     charts_to_generate: charts, // Return ALL generated charts (no limit)
